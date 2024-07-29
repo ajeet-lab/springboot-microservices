@@ -3,7 +3,6 @@ package com.ajeet.electronic.store.services;
 import com.ajeet.electronic.store.dtos.CategoryDto;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 
-import java.util.List;
 
 public interface CategoryService {
     //Create

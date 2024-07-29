@@ -2,8 +2,6 @@ package com.ajeet.electronic.store.controllers;
 
 
 import com.ajeet.electronic.store.dtos.ProductDto;
-import com.ajeet.electronic.store.dtos.UserDto;
-import com.ajeet.electronic.store.entities.Product;
 import com.ajeet.electronic.store.helpers.ApiResponse;
 import com.ajeet.electronic.store.helpers.ImageApiResponse;
 import com.ajeet.electronic.store.helpers.PageableResponse;
@@ -19,7 +17,7 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -125,7 +123,6 @@ public class ProductController {
     @GetMapping("/image/{productId}")
     public void serverImages(@PathVariable("productId") String userId, HttpServletResponse response) throws IOException {
         ProductDto productDto = this.productService.getById(userId);
-       // log.info("UserController_001 :: userImageName {}", productDto.getImageName());
         InputStream resource = fileService.getResource(imagePath, productDto.getImageName());
         response.setContentType(MediaType.IMAGE_PNG_VALUE);
         StreamUtils.copy(resource, response.getOutputStream());

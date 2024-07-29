@@ -25,7 +25,8 @@ import java.util.UUID;
 @Service
 public class ProductServiceImpl implements ProductService {
 
-    private static final String NOT_FOUND_BYID="Product not found with given id : ";
+    private static final String PRODUCT_NOT_FOUND_BY_ID="Product not found with given id : ";
+    private static final String CATEGORY_NOT_FOUND_BY_ID="Category not found with given id : ";
 
     private final ProductDao productDao;
     private final ModelMapper modelMapper;
@@ -57,13 +58,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto getById(String productId) {
-        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BYID+productId));
+        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(PRODUCT_NOT_FOUND_BY_ID+productId));
         return this.modelMapper.map(product, ProductDto.class);
     }
 
     @Override
     public ProductDto updateById(String productId, ProductDto productDto) {
-        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BYID+productId));
+        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(PRODUCT_NOT_FOUND_BY_ID+productId));
         product.setTitle(productDto.getTitle());
         product.setDescription(productDto.getDescription());
         product.setLive(productDto.isLive());
@@ -94,13 +95,13 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(String productId) throws IOException {
-        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BYID+productId));
+        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(PRODUCT_NOT_FOUND_BY_ID+productId));
         this.productDao.delete(product);
     }
 
     @Override
     public ProductDto createProductWithCategory(String categoryId, ProductDto productDto) {
-        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category not found with given id : "+categoryId));
+        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(CATEGORY_NOT_FOUND_BY_ID+categoryId));
         Product product = this.modelMapper.map(productDto, Product.class);
         String productId = UUID.randomUUID().toString();
         product.setProductId(productId);
@@ -112,8 +113,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductDto updateCategoryInExistingProduct(String categoryId, String productId) {
-        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category not found with given id : "+categoryId));
-        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BYID+productId));
+        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(CATEGORY_NOT_FOUND_BY_ID+categoryId));
+        Product product = this.productDao.findById(productId).orElseThrow(()-> new ResourceNotFoundException(PRODUCT_NOT_FOUND_BY_ID+productId));
         product.setCategory(category);
         product = this.productDao.save(product);
         return this.modelMapper.map(product, ProductDto.class);
@@ -121,9 +122,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public PageableResponse<ProductDto> getAllProductOfCategory(String categoryId, int pageNumber, int pageSize, String sortBy, String sortDir) {
-        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException("Category not found with given id : "+categoryId));
+        Category category = this.categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(CATEGORY_NOT_FOUND_BY_ID+categoryId));
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        Page<Product> page = this.productDao.findByCategory(category, pageable);;
+        Page<Product> page = this.productDao.findByCategory(category, pageable);
         return Helper.pageableResponse(page, ProductDto.class);
     }
 }

@@ -2,11 +2,7 @@ package com.ajeet.electronic.store.entities;
 
 import lombok.*;
 
-import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import jakarta.persistence.*;
 
 
 @Getter

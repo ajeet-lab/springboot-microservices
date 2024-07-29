@@ -35,8 +35,8 @@ public class UserServiceImpl implements UserService {
     @Value("${user.profile.image.path}")
     private  String imagePath;
 
-    private static final String NOT_FOUND_BYID="User not found with given id : ";
-    private static final String NOT_FOUND_BYEMAIL="User not found with given email: ";
+    private static final String USER_NOT_FOUND_BY_ID="User not found with given id : ";
+    private static final String USER_NOT_FOUND_BY_EMAIL="User not found with given email: ";
 
    private final UserDao userDao;
    private final ModelMapper modelMapper;
@@ -69,13 +69,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(String userId) {
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_BYID+userId));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID+userId));
         return this.modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public UserDto updateUserById(String userId, UserDto userDto) {
-       User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_BYID+userId));
+       User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID+userId));
         user.setName(userDto.getName());
         user.setEmail(userDto.getEmail());
         user.setPassword(userDto.getPassword());
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        User user = this.userDao.findByEmail(email).orElseThrow(()->  new ResourceNotFoundException(NOT_FOUND_BYEMAIL+email));
+        User user = this.userDao.findByEmail(email).orElseThrow(()->  new ResourceNotFoundException(USER_NOT_FOUND_BY_EMAIL+email));
         return this.modelMapper.map(user, UserDto.class);
     }
 
@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String userId) throws IOException {
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(NOT_FOUND_BYID+userId));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID+userId));
         String fullPath = imagePath+user.getImageName();
         try{
             Path path = Paths.get(fullPath);

@@ -2,9 +2,6 @@ package com.ajeet.electronic.store.dtos;
 
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-
 @Getter
 @Setter
 @Builder

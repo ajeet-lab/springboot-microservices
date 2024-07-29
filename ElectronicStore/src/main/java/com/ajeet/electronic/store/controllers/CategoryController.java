@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/category")
@@ -46,7 +45,6 @@ public class CategoryController {
             @RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir)
 
     {
-       // List<CategoryDto> categoryDtos;
         PageableResponse<CategoryDto> categoryDtos;
         categoryDtos = this.categoryService.getAllCategory(pageNumber, pageSize, sortBy, sortDir);
         return new ResponseEntity<>(categoryDtos, HttpStatus.OK);
@@ -54,7 +52,6 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryDto> getById(@PathVariable("categoryId") String categoryId){
-
         return new ResponseEntity<>(this.categoryService.getCategoryById(categoryId), HttpStatus.OK);
     }
 
