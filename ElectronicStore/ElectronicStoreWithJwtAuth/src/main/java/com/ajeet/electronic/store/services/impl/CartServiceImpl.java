@@ -8,6 +8,7 @@ import com.ajeet.electronic.store.dtos.CartDto;
 import com.ajeet.electronic.store.entities.*;
 import com.ajeet.electronic.store.exceptions.ResourceNotFoundException;
 import com.ajeet.electronic.store.helpers.AddToCartRequest;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.services.CartService;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -27,10 +28,6 @@ import java.util.stream.Collectors;
 public class CartServiceImpl implements CartService {
 
     private final Logger logger = LoggerFactory.getLogger(CartServiceImpl.class);
-
-    private static final String USER_NOT_FOUND_BY_ID = "User not found with given id : ";
-    private static final String PRODUCT_NOT_FOUND_BY_ID = "Product not found with given id : ";
-    private static final String CART_NOT_FOUND_BY_USER = "Cart of given user not found !! ";
 
     private final UserDao userDao;
     private final ProductDao productDao;
@@ -52,9 +49,9 @@ public class CartServiceImpl implements CartService {
         String productId = request.getProductId();
         int quantity = request.getQuantity();
 
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + userId));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID + userId));
 
-        Product product = this.productDao.findById(productId).orElseThrow(() -> new ResourceNotFoundException(PRODUCT_NOT_FOUND_BY_ID + productId));
+        Product product = this.productDao.findById(productId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.PRODUCT_NOT_FOUND_BY_ID + productId));
 
         Cart cart = null;
 
@@ -95,23 +92,23 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void removeItemFromCart(String userId, int  cartItemId) {
-        CartItem cartItem = this.cartItemDao.findById(cartItemId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + cartItemId));
+        CartItem cartItem = this.cartItemDao.findById(cartItemId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID + cartItemId));
         this.cartItemDao.delete(cartItem);
     }
 
 
     @Override
     public void clearItemFromCart(String userId) {
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + userId));
-        Cart cart = this.cartDao.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(CART_NOT_FOUND_BY_USER));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID + userId));
+        Cart cart = this.cartDao.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(AppConstents.CART_NOT_FOUND_BY_USER));
         cart.getItems().clear();
         this.cartDao.save(cart);
     }
 
     @Override
     public CartDto getCartByUser(String userId) {
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID + userId));
-        Cart cart = this.cartDao.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(CART_NOT_FOUND_BY_USER));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID + userId));
+        Cart cart = this.cartDao.findByUser(user).orElseThrow(() -> new ResourceNotFoundException(AppConstents.CART_NOT_FOUND_BY_USER));
         return this.modelMapper.map(cart, CartDto.class);
     }
 }

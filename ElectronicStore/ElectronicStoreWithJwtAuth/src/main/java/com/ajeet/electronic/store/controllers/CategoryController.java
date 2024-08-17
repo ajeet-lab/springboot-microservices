@@ -4,6 +4,7 @@ package com.ajeet.electronic.store.controllers;
 import com.ajeet.electronic.store.dtos.CategoryDto;
 import com.ajeet.electronic.store.dtos.ProductDto;
 import com.ajeet.electronic.store.helpers.ApiResponse;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 import com.ajeet.electronic.store.services.CategoryService;
 import com.ajeet.electronic.store.services.ProductService;
@@ -59,7 +60,7 @@ public class CategoryController {
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<ApiResponse> delete(@PathVariable("categoryId") String categoryId){
         this.categoryService.delete(categoryId);
-        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.OK).message("Categegory delete successfully with given categoryId "+ categoryId).isSuccess(true).build();
+        ApiResponse apiResponse = ApiResponse.builder().status(HttpStatus.OK).message(AppConstents.CATEGORY_DELETED_BY_ID + categoryId).isSuccess(true).build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 

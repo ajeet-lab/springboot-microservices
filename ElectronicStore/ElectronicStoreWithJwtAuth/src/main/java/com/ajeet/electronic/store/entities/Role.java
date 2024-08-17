@@ -5,16 +5,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Builder
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Role {
 
     @Id

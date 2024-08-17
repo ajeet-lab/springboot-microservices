@@ -2,6 +2,7 @@ package com.ajeet.electronic.store.controllers;
 
 import com.ajeet.electronic.store.dtos.UserDto;
 import com.ajeet.electronic.store.helpers.ApiResponse;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.ImageApiResponse;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 import com.ajeet.electronic.store.services.FileService;
@@ -91,10 +92,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<ApiResponse> updateUserById(@PathVariable String userId) throws IOException {
+    public ResponseEntity<ApiResponse> deleteUserById(@PathVariable String userId) throws IOException {
         try{
             this.userService.deleteUser(userId);
-            ApiResponse apiResponse = ApiResponse.builder().isSuccess(true).message("User deleted successfully with given user id : " + userId).status(HttpStatus.OK).build();
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .isSuccess(true)
+                    .message(AppConstents.USER_DELETED_BY_ID + userId)
+                    .status(HttpStatus.OK).build();
             return new ResponseEntity<>(apiResponse, HttpStatus.OK);
         }catch (IOException ex){
             ApiResponse apiResponse = ApiResponse.builder().isSuccess(false).message(ex.getMessage()).status(HttpStatus.NOT_FOUND).build();
@@ -121,7 +125,7 @@ public class UserController {
         userDto.setImageName(uploadImaged);
         this.userService.updateUserById(userId, userDto);
 
-        ImageApiResponse imageApiResponse = ImageApiResponse.builder().isSuccess(true).message("File uploaded successfully with Image name : " + uploadImaged).imageName(uploadImaged).status(HttpStatus.OK).build();
+        ImageApiResponse imageApiResponse = ImageApiResponse.builder().isSuccess(true).message(AppConstents.FILE_UPLOADED + uploadImaged).imageName(uploadImaged).status(HttpStatus.OK).build();
         return new ResponseEntity<>(imageApiResponse, HttpStatus.OK);
     }
 

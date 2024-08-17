@@ -3,6 +3,7 @@ package com.ajeet.electronic.store.controllers;
 
 import com.ajeet.electronic.store.dtos.OrderDto;
 import com.ajeet.electronic.store.helpers.ApiResponse;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.CreateOrderRequest;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 import com.ajeet.electronic.store.services.OrderService;
@@ -25,14 +26,14 @@ public class OrderController {
     }
 
 
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+ AppConstents.ROLE_NORMAL+"','"+AppConstents.ROLE_ADMIN+"')")
     @PostMapping
     public ResponseEntity<OrderDto> createOrder(@RequestBody CreateOrderRequest createOrderRequest){
         OrderDto orderDto = this.orderService.createOrder(createOrderRequest);
         return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+AppConstents.ROLE_NORMAL+"','"+AppConstents.ROLE_ADMIN+"')")
     @DeleteMapping("/{orderId}")
     public ResponseEntity<ApiResponse> deleteOrder(@PathVariable("orderId") String orderId){
         this.orderService.removeOrder(orderId);
@@ -46,14 +47,14 @@ public class OrderController {
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('NORMAL','ADMIN')")
+    @PreAuthorize("hasAnyRole('"+AppConstents.ROLE_NORMAL+"','"+AppConstents.ROLE_ADMIN+"')")
     @GetMapping("/users/{userId}")
     public ResponseEntity<List<OrderDto>> getOrderOfUser(@PathVariable("userId") String userId){
         List<OrderDto> orderDto = this.orderService.getOrderOfUser(userId);
         return new ResponseEntity<>(orderDto, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('"+AppConstents.ROLE_ADMIN+"')")
     @GetMapping
     public ResponseEntity<PageableResponse<OrderDto>> getOrders(
             @RequestParam(value = "pageNumber", defaultValue = "0", required = false) int pageNumber,

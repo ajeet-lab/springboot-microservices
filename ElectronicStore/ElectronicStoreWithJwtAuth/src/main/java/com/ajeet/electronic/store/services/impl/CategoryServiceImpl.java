@@ -4,6 +4,7 @@ import com.ajeet.electronic.store.daos.CategoryDao;
 import com.ajeet.electronic.store.dtos.CategoryDto;
 import com.ajeet.electronic.store.entities.Category;
 import com.ajeet.electronic.store.exceptions.ResourceNotFoundException;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.Helper;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 import com.ajeet.electronic.store.services.CategoryService;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-    private static final String NOT_FOUND_BY_ID="Category not found with given category id : ";
+
 
     private final ModelMapper modelMapper;
     private final CategoryDao categoryDao;
@@ -41,7 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto update(CategoryDto categoryDto, String categoryId) {
-        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BY_ID+ categoryId));
+        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(AppConstents.CATEGORY_NOT_FOUND_BY_ID+ categoryId));
         category.setTitle(categoryDto.getTitle());
         category.setTitle(categoryDto.getDescription());
         category = categoryDao.save(category);
@@ -59,13 +60,13 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public CategoryDto getCategoryById(String categoryId) {
-        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BY_ID+ categoryId));
+        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(AppConstents.CATEGORY_NOT_FOUND_BY_ID+ categoryId));
         return this.modelMapper.map(category, CategoryDto.class);
     }
 
     @Override
     public void delete(String categoryId) {
-        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(NOT_FOUND_BY_ID+ categoryId));
+        Category category = categoryDao.findById(categoryId).orElseThrow(()-> new ResourceNotFoundException(AppConstents.CATEGORY_NOT_FOUND_BY_ID+ categoryId));
         this.categoryDao.delete(category);
     }
 

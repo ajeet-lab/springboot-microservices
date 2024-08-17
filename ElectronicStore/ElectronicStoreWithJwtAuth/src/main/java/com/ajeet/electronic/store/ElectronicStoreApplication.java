@@ -9,11 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @SpringBootApplication
@@ -34,7 +33,7 @@ public class ElectronicStoreApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Role role1 = new Role();
-        Role role = roleDao.findByName("ROLE_ADMIN").orElse(null);
+        Role role = this.roleDao.findByName("ROLE_ADMIN").orElse(null);
         if(role == null ){
             role1 = new Role();
             role1.setRoleId(UUID.randomUUID().toString());
@@ -48,13 +47,13 @@ public class ElectronicStoreApplication implements CommandLineRunner {
             user = new User();
             user.setUserId(UUID.randomUUID().toString());
             user.setName("Admin");
-            user.setPassword(passwordEncoder.encode("admin123"));
+            user.setPassword(this.passwordEncoder.encode("admin123"));
             user.setGender("Male");
             user.setEmail("admin@gmail.com");
             user.setRoles(List.of(role1));
             user.setAbout("This id is admin id who can access all routes");
             user.setImageName("Admin.png");
-            userDao.save(user);
+            this.userDao.save(user);
             System.out.println("User is created");
         }
     }

@@ -1,12 +1,11 @@
 package com.ajeet.electronic.store.services.impl;
 
 import com.ajeet.electronic.store.daos.*;
-import com.ajeet.electronic.store.dtos.CartDto;
 import com.ajeet.electronic.store.dtos.OrderDto;
-import com.ajeet.electronic.store.dtos.ProductDto;
 import com.ajeet.electronic.store.entities.*;
 import com.ajeet.electronic.store.exceptions.BadApiRequest;
 import com.ajeet.electronic.store.exceptions.ResourceNotFoundException;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.CreateOrderRequest;
 import com.ajeet.electronic.store.helpers.Helper;
 import com.ajeet.electronic.store.helpers.PageableResponse;
@@ -29,30 +28,21 @@ import java.util.stream.Collectors;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private static final String USER_NOT_FOUND_BY_ID = "User is not found with given id : ";
-    private static final String PRODUCT_NOT_FOUND_BY_ID = "Product is not found with given id : ";
-    private static final String CART_NOT_FOUND_BY_USER = "Cart of given user not found !! ";
-    private static final String CART_NOT_FOUND_BY_ID = "Cart is not found with given id : ";
-    private static final String ORDER_NOT_FOUND_BY_ID = "Order is not found with given id : ";
+
 
     private final UserDao userDao;
 
-    private final ProductDao productDao;
 
     private final OrderDao orderDao;
-
-    private final OrderItemDao orderItemDao;
 
     private final CartDao cartDao;
 
     private final ModelMapper modelMapper;
 
     @Autowired
-    public OrderServiceImpl(UserDao userDao, ProductDao productDao, OrderDao orderDao, OrderItemDao orderItemDao, ModelMapper modelMapper, CartDao cartDao) {
+    public OrderServiceImpl(UserDao userDao, OrderDao orderDao, ModelMapper modelMapper, CartDao cartDao) {
         this.userDao = userDao;
-        this.productDao = productDao;
         this.orderDao = orderDao;
-        this.orderItemDao = orderItemDao;
         this.modelMapper = modelMapper;
         this.cartDao = cartDao;
     }
@@ -61,8 +51,8 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto createOrder(CreateOrderRequest createOrderRequest) {
         String userId=createOrderRequest.getUserId();
         String cartId=createOrderRequest.getCartId();
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID));
-        Cart cart = this.cartDao.findById(cartId).orElseThrow(() -> new ResourceNotFoundException(CART_NOT_FOUND_BY_ID));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID));
+        Cart cart = this.cartDao.findById(cartId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.CART_NOT_FOUND_BY_ID));
 
         List<CartItem> cartItems = cart.getItems();
 
@@ -110,13 +100,13 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void removeOrder(String orderId) {
-        Order order = this.orderDao.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_BY_ID+orderId));
+        Order order = this.orderDao.findById(orderId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.ORDER_NOT_FOUND_BY_ID+orderId));
         this.orderDao.delete(order);
     }
 
     @Override
     public List<OrderDto> getOrderOfUser(String userId) {
-        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(USER_NOT_FOUND_BY_ID));
+        User user = this.userDao.findById(userId).orElseThrow(() -> new ResourceNotFoundException(AppConstents.USER_NOT_FOUND_BY_ID));
 
        List<Order> orders =  this.orderDao.findByUser(user);
         return orders.stream().map(order -> modelMapper.map(order, OrderDto.class)).collect(Collectors.toList());

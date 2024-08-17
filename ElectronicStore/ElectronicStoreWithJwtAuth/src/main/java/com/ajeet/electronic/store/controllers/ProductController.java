@@ -3,6 +3,7 @@ package com.ajeet.electronic.store.controllers;
 
 import com.ajeet.electronic.store.dtos.ProductDto;
 import com.ajeet.electronic.store.helpers.ApiResponse;
+import com.ajeet.electronic.store.helpers.AppConstents;
 import com.ajeet.electronic.store.helpers.ImageApiResponse;
 import com.ajeet.electronic.store.helpers.PageableResponse;
 import com.ajeet.electronic.store.services.FileService;
@@ -95,7 +96,7 @@ public class ProductController {
     @DeleteMapping("/{productId}")
     public ResponseEntity<ApiResponse> deleteById(@PathVariable String productId) throws IOException {
         this.productService.deleteProduct(productId);
-        ApiResponse apiResponse =ApiResponse.builder().isSuccess(true).message("Product deleted with given id :"+productId).status(HttpStatus.OK).build();
+        ApiResponse apiResponse =ApiResponse.builder().isSuccess(true).message(AppConstents.PRODUCT_DELETED_BY_ID +productId).status(HttpStatus.OK).build();
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
     }
 
@@ -115,7 +116,7 @@ public class ProductController {
         // Update the imageName in database with given user Id
         productDto.setImageName(uploadImaged);
         this.productService.updateById(productId, productDto);
-        ImageApiResponse imageApiResponse = ImageApiResponse.builder().isSuccess(true).message("File uploaded successfully with Image name : " + uploadImaged).imageName(uploadImaged).status(HttpStatus.OK).build();
+        ImageApiResponse imageApiResponse = ImageApiResponse.builder().isSuccess(true).message(AppConstents.FILE_UPLOADED + uploadImaged).imageName(uploadImaged).status(HttpStatus.OK).build();
         return new ResponseEntity<>(imageApiResponse, HttpStatus.OK);
     }
 
