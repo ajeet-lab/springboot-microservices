@@ -29,6 +29,5 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         ObjectMapper mapper = new ObjectMapper();
         writer.print(mapper.writeValueAsString(apiResponse));
-        //writer.print("Access Denied " + authException.getMessage());
     }
 }

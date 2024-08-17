@@ -1,8 +1,6 @@
 package com.ajeet.electronic.store.dtos;
 
-import com.ajeet.electronic.store.entities.OrderItem;
-import com.ajeet.electronic.store.entities.User;
-import jakarta.persistence.*;
+
 import lombok.*;
 
 import java.util.ArrayList;

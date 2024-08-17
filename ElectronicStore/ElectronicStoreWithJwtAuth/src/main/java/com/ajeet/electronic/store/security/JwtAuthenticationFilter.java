@@ -1,5 +1,6 @@
 package com.ajeet.electronic.store.security;
 
+import com.ajeet.electronic.store.exceptions.BadApiRequest;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import jakarta.servlet.FilterChain;
@@ -10,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,7 +23,7 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+    private final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     // Steps:
     // Get token from request
@@ -57,12 +58,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
            }catch (IllegalArgumentException ex){
-               logger.info("Illegal Argument while fetching the username !! " + ex.getMessage());
+               logger.info("Illegal Argument while fetching the username !! {}",  ex.getMessage());
            }catch (ExpiredJwtException ex){
                logger.info("Given Jwt token has expired {}", ex.getMessage());
            }catch (MalformedJwtException ex){
-               logger.info("Some changed has done in token !! invalid token "+ ex.getMessage());
+               logger.info("Some changed has done in token !! invalid token {}", ex.getMessage());
            }catch (Exception ex){
+               logger.info("Exception ::: {}", ex.getMessage());
                ex.printStackTrace();
            }
         }else {

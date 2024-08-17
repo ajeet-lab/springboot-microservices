@@ -11,5 +11,5 @@
 
 UI URL
 ```
-    
+  http://localhost:9902/swagger-ui/index.html  
 ```

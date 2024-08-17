@@ -2,7 +2,6 @@ package com.ajeet.electronic.store.services.impl;
 
 
 import com.ajeet.electronic.store.daos.UserDao;
-import com.ajeet.electronic.store.entities.User;
 import com.ajeet.electronic.store.exceptions.ResourceNotFoundException;
 import com.ajeet.electronic.store.helpers.AppConstents;
 import org.springframework.beans.factory.annotation.Autowired;

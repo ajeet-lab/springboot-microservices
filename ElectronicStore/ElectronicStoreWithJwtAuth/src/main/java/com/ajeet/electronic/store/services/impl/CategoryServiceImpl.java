@@ -21,8 +21,6 @@ import java.util.UUID;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-
-
     private final ModelMapper modelMapper;
     private final CategoryDao categoryDao;
 

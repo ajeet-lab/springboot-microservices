@@ -1,13 +1,9 @@
 package com.ajeet.electronic.store.helpers;
 
 
-import com.ajeet.electronic.store.dtos.OrderItemDto;
-import com.ajeet.electronic.store.dtos.UserDto;
+
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter

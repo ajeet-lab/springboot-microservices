@@ -16,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,19 +26,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    private Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
+
+
+    private final AuthenticationManager authenticationManager;
+
+    private final JwtHelper jwtHelper;
+
+    private final UserDetailsService userDetailsService;
+
+    private final ModelMapper modelMapper;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    public AuthenticationController(AuthenticationManager authenticationManager, JwtHelper jwtHelper, UserDetailsService userDetailsService, ModelMapper modelMapper){
+        this.authenticationManager = authenticationManager;
+        this.jwtHelper = jwtHelper;
+        this.userDetailsService=userDetailsService;
+        this.modelMapper = modelMapper;
+    }
 
-    @Autowired
-    private JwtHelper jwtHelper;
-
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private ModelMapper modelMapper;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> login(@RequestBody JwtRequest request){
@@ -47,12 +52,11 @@ public class AuthenticationController {
        this.doAuthenticate(request.getEmail(), request.getPassword());
 
        // FETCH USER DETAIL : WE CAN USE ONE OF THESE OPTIONS GIVEN BELOW FOR FETCHING USER DATA
-       // UserDetails userDetails = this.userDetailsService.loadUserByUsername(request.getEmail());
         User user = (User)this.userDetailsService.loadUserByUsername(request.getEmail());
 
         // GENERATE TOKEN
         String token = jwtHelper.generateToken(user);
-
+        logger.info("Token : {}", token);
         // Prepare the JwtResponse
         JwtResponse jwtResponse = JwtResponse.builder().token(token).userDto(modelMapper.map(user, UserDto.class)).build();
 

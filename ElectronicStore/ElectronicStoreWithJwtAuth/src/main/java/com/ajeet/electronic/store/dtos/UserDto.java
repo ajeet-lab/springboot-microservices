@@ -2,15 +2,12 @@ package com.ajeet.electronic.store.dtos;
 
 
 import com.ajeet.electronic.store.customvalidator.ImageValid;
-import com.ajeet.electronic.store.entities.Role;
 import lombok.*;
 
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter

@@ -30,4 +30,12 @@ public class AppConstents {
 
     // START EXCEPTIONS MESSAGES
     public static final String INVALID_USERNAME_OR_PASSWORD = "Invalid username or password !!";
+
+    // START SWAGGER CONFIG
+    public static final String [] PUBLIC_URLS = {"/swagger-ui/**", "/webjars/**", "/swagger-resources"};
+
+
+     AppConstents(){
+        super();
+    }
 }
